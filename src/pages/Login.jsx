@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import useAuth from "../store/auth";
 import { useState } from "react";
-import "./Login.css"; 
+import "./Login.css";
 
 export default function Login() {
   const { setRole, setUser } = useAuth();
@@ -37,36 +37,45 @@ export default function Login() {
     }
   };
 
+  const handleGoToRegister = () => {
+    navigate("/register");
+  };
+
+
   return (
     <div>
-    <h1>Delorean Parts</h1>
-    <div className="login-container">
-      <h2 className="login-title">Iniciar Sesión</h2>
-      {error && <p className="error-message">{error}</p>}
-      <form className="login-form" onSubmit={handleLogin}>
-        <div className="form-group">
-          <label htmlFor="username">Usuario:</label>
-          <input
-            id="username"
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="password">Contraseña:</label>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <button className="login-button" type="submit">Ingresar</button>
-      </form>
-    </div>
+      <h1>Delorean Parts</h1>
+      <div className="login-container">
+        <h2 className="login-title">Iniciar Sesión</h2>
+        {error && <p className="error-message">{error}</p>}
+        <form className="login-form" onSubmit={handleLogin}>
+          <div className="form-group">
+            <label htmlFor="username">Usuario:</label>
+            <input
+              id="username"
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="password">Contraseña:</label>
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+
+          <button className="login-button" type="submit">Ingresar</button>
+          <button className="register-button" type="button" onClick={handleGoToRegister}>
+            Registrar
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

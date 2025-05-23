@@ -1,10 +1,16 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "./Register.css";
 
 export default function Register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("buyer");
   const [msg, setMsg] = useState("");
+  const [msgType, setMsgType] = useState("");
+  const [showModal, setShowModal] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -18,25 +24,67 @@ export default function Register() {
     const data = await res.json();
     if (res.ok) {
       setMsg("Usuario creado correctamente");
+      setMsgType("success");
+      setShowModal(true);
     } else {
       setMsg(data.error);
+      setMsgType("error");
     }
   };
 
+  const handleModalClose = () => {
+    setShowModal(false);
+    navigate("/login");
+  };
+
+
   return (
     <div>
-      <h2>Crear Usuario</h2>
-      <form onSubmit={handleRegister}>
-        <input placeholder="Usuario" value={username} onChange={e => setUsername(e.target.value)} />
-        <input placeholder="Contraseña" type="password" value={password} onChange={e => setPassword(e.target.value)} />
-        <select value={role} onChange={e => setRole(e.target.value)}>
-          <option value="buyer">Comprador</option>
-          <option value="seller">Vendedor</option>
-          <option value="guest">Invitado</option>
-        </select>
-        <button>Registrar</button>
-      </form>
-      {msg && <p>{msg}</p>}
+      <h1>Delorean Parts</h1>
+      <div className="login-container">
+        <h2 className="login-title">Crear Usuario</h2>
+        {msgType === "error" && <p className="error-message">{msg}</p>}
+        <form className="login-form" onSubmit={handleRegister}>
+          <div className="form-group">
+            <label>Usuario:</label>
+            <input
+              placeholder="Usuario"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Contraseña:</label>
+            <input
+              placeholder="Contraseña"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Rol:</label>
+            <select value={role} onChange={(e) => setRole(e.target.value)}>
+              <option value="buyer">Comprador</option>
+              <option value="seller">Vendedor</option>
+              <option value="guest">Invitado</option>
+            </select>
+          </div>
+          <button className="register-button">Registrar</button>
+        </form>
+      </div>
+
+      {/* Modal */}
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <h3>{msg}</h3>
+            <button onClick={handleModalClose} className="modal-ok-button">OK</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

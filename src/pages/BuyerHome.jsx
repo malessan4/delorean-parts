@@ -1,5 +1,6 @@
 import useParts from "../store/parts";
 import useAuth from "../store/auth";
+import "./BuyerHome.css"; 
 
 export default function BuyerHome() {
   const { parts } = useParts();

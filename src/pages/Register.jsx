@@ -33,11 +33,10 @@ export default function Register() {
     }
   };
 
-  const handleModalClose = () => {
-    setShowModal(false);
-    navigate("/login");
-  };
-
+const handleModalClose = () => {
+  setShowModal(false);
+  setTimeout(() => navigate("/login"), 300); // da tiempo a que desaparezca suavemente
+};
 
   return (
     <motion.div

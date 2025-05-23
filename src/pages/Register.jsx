@@ -1,71 +1,42 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-
+import { useState } from "react";
 
 export default function Register() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [role, setRole] = useState('buyer'); // Rol por defecto
-  const [error, setError] = useState('');
-  const navigate = useNavigate();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [role, setRole] = useState("buyer");
+  const [msg, setMsg] = useState("");
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    
-    try {
-      // Verificar si el usuario ya existe
-      const data = await fs.promises.readFile('users.txt', 'utf-8');
-      const users = data.split('\n');
-      
-      if (users.some(line => line.startsWith(`${username}:`))) {
-        setError('El usuario ya existe');
-        return;
-      }
 
-      // Añadir nuevo usuario
-      const newUser = `${username}:${password}:${role}\n`;
-      await fs.promises.appendFile('users.txt', newUser);
-      
-      navigate('/login'); // Redirigir a login después del registro
-    } catch (err) {
-      setError('Error al registrar usuario');
-      console.error(err);
+    const res = await fetch("http://localhost:3000/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password, role }),
+    });
+
+    const data = await res.json();
+    if (res.ok) {
+      setMsg("Usuario creado correctamente");
+    } else {
+      setMsg(data.error);
     }
   };
 
   return (
     <div>
-      <h2>Crear Cuenta</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      <h2>Crear Usuario</h2>
       <form onSubmit={handleRegister}>
-        <div>
-          <label>Usuario:</label>
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Contraseña:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Rol:</label>
-          <select value={role} onChange={(e) => setRole(e.target.value)}>
-            <option value="buyer">Comprador</option>
-            <option value="seller">Vendedor</option>
-            <option value="guest">Invitado</option>
-          </select>
-        </div>
-        <button type="submit">Registrarse</button>
+        <input placeholder="Usuario" value={username} onChange={e => setUsername(e.target.value)} />
+        <input placeholder="Contraseña" type="password" value={password} onChange={e => setPassword(e.target.value)} />
+        <select value={role} onChange={e => setRole(e.target.value)}>
+          <option value="buyer">Comprador</option>
+          <option value="seller">Vendedor</option>
+          <option value="guest">Invitado</option>
+        </select>
+        <button>Registrar</button>
       </form>
+      {msg && <p>{msg}</p>}
     </div>
   );
 }

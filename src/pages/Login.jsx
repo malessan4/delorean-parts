@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import useAuth from "../store/auth";
 import { useState } from "react";
+import "./Login.css"; 
 
 export default function Login() {
   const { setRole, setUser } = useAuth();
@@ -20,7 +21,7 @@ export default function Login() {
         body: JSON.stringify({ username, password }),
       });
 
-      console.log("Estado de la respuest:", response.status);
+      console.log("Estado de la respuesta:", response.status);
 
       if (!response.ok) throw new Error("Login fallido");
 
@@ -31,36 +32,41 @@ export default function Login() {
       setUser(user.username);
       navigate(user.role === "seller" ? "/seller" : "/home");
     } catch (err) {
-      console.error("Error en login:", err)
+      console.error("Error en login:", err);
       setError("Credenciales incorrectas");
     }
   };
 
   return (
     <div>
-      <h2>Iniciar Sesión</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <form onSubmit={handleLogin}>
-        <div>
-          <label>Usuario:</label>
+    <h1>Delorean Parts</h1>
+    <div className="login-container">
+      <h2 className="login-title">Iniciar Sesión</h2>
+      {error && <p className="error-message">{error}</p>}
+      <form className="login-form" onSubmit={handleLogin}>
+        <div className="form-group">
+          <label htmlFor="username">Usuario:</label>
           <input
+            id="username"
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
           />
         </div>
-        <div>
-          <label>Contraseña:</label>
+        <div className="form-group">
+          <label htmlFor="password">Contraseña:</label>
           <input
+            id="password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
         </div>
-        <button type="submit">Ingresar</button>
+        <button className="login-button" type="submit">Ingresar</button>
       </form>
+    </div>
     </div>
   );
 }

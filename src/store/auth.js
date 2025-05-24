@@ -6,10 +6,12 @@
 import { create } from 'zustand';
 
 const useAuth = create((set) => ({
-  user: null,
-  role: null,
+  user: "",
+  role: "",
   setUser: (newUser) => set({ user: newUser }),
+  setAuth: (role, username) => set({ role, username }),
   setRole: (newRole) => set({ role: newRole }),
+  logout: () => set({ role: "" }),
 }));
 
 export default useAuth;

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import useParts from "../store/parts";
 import useAuth from "../store/auth";
+import { useNavigate } from "react-router-dom";
 import "./SellerHome.css";
 
 export default function SellerHome() {
@@ -27,6 +28,14 @@ export default function SellerHome() {
         e.target.style.height = e.target.scrollHeight + "px";
       }
     }
+  };
+
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();            // Borra el rol
+    navigate("/login");  // Redirige a login
   };
 
   const handleSubmit = async (e) => {
@@ -76,32 +85,38 @@ export default function SellerHome() {
   }
 
   return (
-    <div className="seller-container">
-      <h2 className="seller-title">Publicar Repuesto</h2>
-      <form className="seller-form" onSubmit={handleSubmit}>
-        <input
-          name="name"
-          placeholder="Nombre"
-          value={form.name}
-          onChange={handleChange}
-        />
-        <textarea
-          name="description"
-          placeholder="Descripción"
-          value={form.description}
-          onChange={handleChange}
-          className="seller-textarea"
-          rows={1}
-        />
-        <input
-          name="price"
-          placeholder="Precio"
-          type="text"
-          value={form.price}
-          onChange={handleChange}
-        />
-        <button type="submit" className="seller-button">Publicar</button>
-      </form>
+    <div>
+      <div className="navbar">
+        <div className="navbar-left">Hola,   {user || "Usuario"}</div>
+        <button onClick={handleLogout} className="logout-button">Cerrar sesión</button>
+      </div>
+      <div className="seller-container">
+
+        <form className="seller-form" onSubmit={handleSubmit}>
+          <input
+            name="name"
+            placeholder="Nombre del repuesto"
+            value={form.name}
+            onChange={handleChange}
+          />
+          <textarea
+            name="description"
+            placeholder="Descripción del repuesto"
+            value={form.description}
+            onChange={handleChange}
+            className="seller-textarea"
+            rows={1}
+          />
+          <input
+            name="price"
+            placeholder="Precio"
+            type="text"
+            value={form.price}
+            onChange={handleChange}
+          />
+          <button type="submit" className="seller-button">Publicar</button>
+        </form>
+      </div>
     </div>
   );
 }

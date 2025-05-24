@@ -1,4 +1,4 @@
-/* Login.css - Dark Mode con Lato */
+
 * {
     font-family: 'Lato', sans-serif;
     margin: 0;
@@ -126,7 +126,7 @@ h1 {
   background-color: #fff;
   transform: scaleX(0);
   transform-origin: left;
-  transition: transform 0.4s ease;
+  transition: transform 0.7s ease;
 }
 
 
@@ -137,12 +137,17 @@ h1 {
 
 
 .login-button:hover{
+  color:rgb(175, 175, 175);
+  font-size: 17px;
   background: linear-gradient(135deg, #5f229b, #9e64f9);
   transform: translateY(-3px) scale(1.03);
   box-shadow: 0 6px 25px rgba(187, 134, 252, 0.6);
   filter: brightness(1.1);
+
 }
-.register-button:hover {
+.register-button:hover{
+  color:rgb(175, 175, 175);
+  font-size: 17px;
   background: linear-gradient(135deg, #605f9e, #0f0d8b);
   transform: translateY(-3px) scale(1.03);
   box-shadow: 0 6px 25px rgba(187, 134, 252, 0.6);

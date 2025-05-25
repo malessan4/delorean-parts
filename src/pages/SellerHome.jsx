@@ -7,6 +7,8 @@ import "./SellerHome.css";
 export default function SellerHome() {
   const { addPart } = useParts();
   const { role } = useAuth();
+  const [msg, setMsg] = useState("");
+  const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState({
     name: "",
     description: "",
@@ -16,17 +18,11 @@ export default function SellerHome() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
 
-    if (name === "price") {
-      const numericValue = value.replace(/\D/g, ""); // Solo números
-      const formatted = "$" + numericValue.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-      setForm({ ...form, [name]: formatted });
-    } else {
-      setForm({ ...form, [name]: value });
-      if (name === "description") {
-        e.target.style.height = "auto";
-        e.target.style.height = e.target.scrollHeight + "px";
-      }
+    if (name === "description") {
+      e.target.style.height = "auto";
+      e.target.style.height = e.target.scrollHeight + "px";
     }
   };
 
@@ -42,10 +38,12 @@ export default function SellerHome() {
     e.preventDefault();
     if (!form.name || !form.price) return;
 
+    const cleanPrice = form.price.replace(/\./g, "").replace(/\$/g, "");
+
     const partData = {
       ...form,
-      price: form.price.replace(/\./g, ""), // Limpia puntos
-      seller: role
+      price: cleanPrice,
+      seller: user
     };
 
     try {
@@ -58,10 +56,12 @@ export default function SellerHome() {
       if (response.ok) {
         addPart(partData);
         setForm({ name: "", description: "", price: "" });
-        alert("Repuesto publicado!");
+        setMsg("Repuesto publicado correctamente");
+        setShowModal(true);
       } else {
         const errData = await response.json();
-        alert("Error al publicar: " + errData.error);
+        setMsg("Error al publicar: " + errData.error);
+        setShowModal(true);
       }
     } catch (err) {
       console.error("Error al enviar el repuesto:", err);
@@ -74,7 +74,11 @@ export default function SellerHome() {
   const partData = {
     ...form,
     price: cleanPrice,
-    seller: role,
+    seller: user,
+  };
+
+  const handleModalClose = () => {
+    setShowModal(false);
   };
 
   function formatNumberWithDots(value) {
@@ -87,7 +91,7 @@ export default function SellerHome() {
   return (
     <div>
       <div className="navbar">
-        <div className="navbar-left">Hola,   {user || "Usuario"}</div>
+        <div className="navbar-left">Hola, {user || "Usuario"}</div>
         <button onClick={handleLogout} className="logout-button">Cerrar sesión</button>
       </div>
       <div className="seller-container">
@@ -117,6 +121,14 @@ export default function SellerHome() {
           <button type="submit" className="seller-button">Publicar</button>
         </form>
       </div>
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <h3>{msg}</h3>
+            <button onClick={handleModalClose} className="modal-ok-button">OK</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

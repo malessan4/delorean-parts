@@ -55,7 +55,7 @@ export default function BuyerHome() {
       >
 
         <div className="navbar">
-          <div className="navbar-left">Hola, {user || "Usuario"}</div>
+          <div className="navbar-left">Hola, {user || "Usuario"}  que vas a comprar hoy?</div>
           <button onClick={handleLogout} className="logout-button">Cerrar sesión</button>
         </div>
         <div className="parts-container">

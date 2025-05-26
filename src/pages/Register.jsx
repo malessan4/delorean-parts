@@ -33,19 +33,28 @@ export default function Register() {
     }
   };
 
-const handleModalClose = () => {
-  setShowModal(false);
-  setTimeout(() => navigate("/login"), 300); // da tiempo a que desaparezca suavemente
-};
+  const handleModalClose = () => {
+    setShowModal(false);
+    setTimeout(() => navigate("/login"), 300); // da tiempo a que desaparezca suavemente
+  };
 
   return (
+    <>
     <motion.div
-      initial={{ opacity: 0, y: 50 }}     // estado inicial
-      animate={{ opacity: 1, y: 0 }}      // animación de entrada
-      exit={{ opacity: 0, y: -50 }}       // animación de salida
-      transition={{ duration: 1.0 }}      // duración
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -50 }}
+      transition={{ duration: 1.0 }}
     >
       <div>
+        {/* NAVBAR con botón Volver */}
+        <div className="navbar">
+          <div className="navbar-left">Registro</div>
+          <button onClick={() => navigate("/login")} className="logout-button">
+            Volver
+          </button>
+        </div>
+
         <h1>Delorean Parts</h1>
         <div className="login-container">
           <h2 className="login-title">Crear Usuario</h2>
@@ -87,11 +96,14 @@ const handleModalClose = () => {
           <div className="modal-overlay">
             <div className="modal">
               <h3>{msg}</h3>
-              <button onClick={handleModalClose} className="modal-ok-button">OK</button>
+              <button onClick={handleModalClose} className="modal-ok-button">
+                OK
+              </button>
             </div>
           </div>
         )}
       </div>
     </motion.div>
+    </>
   );
 }

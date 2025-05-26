@@ -47,7 +47,7 @@ export default function SellerHome() {
     };
 
     try {
-      const response = await fetch("http://localhost:3000/publish-part", {
+      const response = await fetch("https://delorean-parts-backend.onrender.com/publish-part", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(partData),

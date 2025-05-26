@@ -28,7 +28,7 @@ export default function BuyerHome() {
 
   const handleBuy = async (id) => {
     try {
-      const res = await fetch(`http://localhost:3000/api/parts/${id}`, {
+      const res = await fetch(`https://delorean-parts-backend.onrender.com/api/parts/${id}`, {
         method: 'DELETE',
       });
 

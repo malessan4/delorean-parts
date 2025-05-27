@@ -7,7 +7,7 @@ const useParts = create((set) => ({
 
   fetchParts: async () => {
     try {
-      const response = await fetch("http://localhost:3000/parts");
+      const response = await fetch("https://delorean-parts-backend.onrender.com/api/parts");
       const data = await response.json();
       set({ parts: data });
     } catch (error) {
